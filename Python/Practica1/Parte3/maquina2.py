@@ -1,10 +1,9 @@
 import random;
 from datetime import datetime
-from textwrap import indent
 import json
 
 # variables globales
-numeroAleatorio = 5;
+numeroAleatorio = random.randint(0,99);
 lista = []
 boteMaquina = 20;
 intentos= 1;
@@ -13,6 +12,7 @@ salir=False;
 informacion = {}
 infoDia = 'partida_' + datetime.now().strftime("%y-%m-%d")
 informacion[infoDia] = []
+
 
 # métodos
 def segundaOportunidad():
@@ -23,6 +23,8 @@ def segundaOportunidad():
     intentos = 2;
     menu()
 
+
+#Empieza el juego, comparamos el numero del cliente con el número random
 def jugar():
     global numeroAleatorio;
     global numeroCliente;
@@ -55,9 +57,7 @@ def jugar():
         segundaOportunidad()
 
 
-
-
-
+#Compruebo si hay bote en la máquina, si no hay más de 5 euros no se juega más
 def comprobarBote():
     global salir
     if boteMaquina >= 5:
@@ -66,6 +66,8 @@ def comprobarBote():
         print("No hay bote suficiente, avise al responsable")
         salir = True
 
+
+#Aquí se crea el formato del documento y las variables que quieres que coja el documento
 def documento():
     global informacion 
 
@@ -77,12 +79,15 @@ def documento():
         'Saldo Maquina': boteMaquina 
     }) 
 
+
+#Aquí se crea el archivo, ponemos el nombre del json 
 def archivo():
     
     with open("registro.json", "w") as file:
         json.dump(informacion, file)
 
 
+#Es el menu donde el jugador puede elegir lo que quiere
 def menu():
     global opcionMenu;
     global salir;
@@ -99,8 +104,6 @@ def menu():
          else:
              print("Introduce un numero del 1 al 2 ")
 
-
 menu()
-
 documento()
 archivo()
