@@ -1,11 +1,18 @@
 import random;
+from datetime import datetime
+from textwrap import indent
+import json
 
 # variables globales
 numeroAleatorio = 5;
+lista = []
 boteMaquina = 20;
 intentos= 1;
 opcionMenu=0;
 salir=False;
+informacion = {}
+infoDia = 'partida_' + datetime.now().strftime("%y-%m-%d")
+informacion[infoDia] = []
 
 # métodos
 def segundaOportunidad():
@@ -15,25 +22,6 @@ def segundaOportunidad():
     global boteMaquina;
     intentos = 2;
     menu()
-    # numeroCliente = int(input("Introduce un numero del 0 al 99: "))
-    # boteMaquina = boteMaquina + 1;
-
-    # while intentos < 1:
-    #     if numeroCliente != numeroAleatorio:
-    #         intentos = intentos + 1;
-    #         print("Incorrecto");
-    #         if numeroCliente < numeroAleatorio:
-    #             print("El numero es mayor")
-    #         else:
-    #             print("El numero es menor")
-    #     break
-    # else:
-    #      print("Correcto")
-    #      print("Lo has acertado en " , intentos, "intentos")
-    #      print("Has conseguido 5 €")
-    #      boteMaquina = boteMaquina - 5;
-    #      print("El bote restante es de " , boteMaquina)
-
 
 def jugar():
     global numeroAleatorio;
@@ -42,9 +30,10 @@ def jugar():
     global boteMaquina;
 
     numeroCliente = int(input("Introduce un numero del 0 al 99: "))
+    lista.append(numeroCliente)
     boteMaquina = boteMaquina + 1;
 
-    while intentos < 4:
+    while intentos < 3:
         if numeroCliente != numeroAleatorio:
             intentos = intentos + 1;
             print("Incorrecto");
@@ -60,6 +49,7 @@ def jugar():
             print("Has conseguido 5 €")
             boteMaquina = boteMaquina - 5;
             print("El bote restante es de " , boteMaquina)
+            documento()
             break
     else:
         segundaOportunidad()
@@ -69,10 +59,29 @@ def jugar():
 
 
 def comprobarBote():
+    global salir
     if boteMaquina >= 5:
         jugar()
     else:
         print("No hay bote suficiente, avise al responsable")
+        salir = True
+
+def documento():
+    global informacion 
+
+    informacion[infoDia].append({
+        'Hora': datetime.now().strftime("%H:%M:%S"),
+        'Intentos': intentos,
+        'Numero Aleaotrio': numeroAleatorio,
+        'Numeros Probados': lista,
+        'Saldo Maquina': boteMaquina 
+    }) 
+
+def archivo():
+    
+    with open("registro.json", "w") as file:
+        json.dump(informacion, file)
+
 
 def menu():
     global opcionMenu;
@@ -92,3 +101,6 @@ def menu():
 
 
 menu()
+
+documento()
+archivo()
