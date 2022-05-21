@@ -80,7 +80,7 @@ def documento():
     }) 
 
 
-#Aquí se crea el archivo, ponemos el nombre del json 
+#Aquí se crea el archivo, ponemos el nombre del json que queramos 
 def archivo():
     
     with open("registro.json", "w") as file:
